@@ -21,12 +21,12 @@ const Card = (props) => {
     setImgSource(backUpImg);
   }
 
-  const scale = id === "0" ? {scaleY: 1.1} : {scale: 1.1}
+  const scale = String(id) === "0" ? { scaleY: 1.1 } : { scale: 1.1 }; // String is transforming id into a string to be able to strictly compared with the "0"
 
   return (
-    <div className={styles.container}>
-      Card
+    <div className={styles.container} >
       <motion.div
+        id={id}
         className={cls(styles.imgMotionWrapper, classMap[size])}
         whileHover={{ ...scale }}
       >

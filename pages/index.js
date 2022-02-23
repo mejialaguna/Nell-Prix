@@ -2,11 +2,34 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css"
 import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
-import Card from "../components/Card"
+// import Card from "../components/Card"
 import img from "../public/static/Demon-Slayer.png"
 import SectionCard from "../components/Card/SectionCard";
+import { getVideos } from "../lib/index";
+
+
 
 export default function Home() {
+
+  // console.log(getVideos())
+  const disneyVideos = [
+    {
+      ImgUrl: img,
+    },
+    {
+      ImgUrl: img,
+    },
+    {
+      ImgUrl: img,
+    },
+    {
+      ImgUrl: img,
+    },
+    {
+      ImgUrl: img,
+    },
+  ];
+
   return (
     <div className={styles.container}>
       <Head>
@@ -18,11 +41,13 @@ export default function Home() {
       <Banner
         title="Demon Slayer"
         subtitle="Let the hunting begin..."
-        imgUrl={"https://www.cheatsheet.com/wp-content/uploads/2021/11/Demon-Slayer-Entertainment-District.jpeg"}
+        imgUrl={
+          "https://www.cheatsheet.com/wp-content/uploads/2021/11/Demon-Slayer-Entertainment-District.jpeg"
+        }
       />
       <div className={styles.sectionWrapper}>
-      <SectionCard title="Disney"/>
-
+        <SectionCard title="Disney" videos={disneyVideos} size="large" />
+        <SectionCard title="Productivity" videos={disneyVideos} size="medium" />
       </div>
     </div>
   );

@@ -1,24 +1,18 @@
 import styles from "./SectionCard.module.css";
 import Card from "../index";
-import img from "../../../public/static/Demon-Slayer.png"
+import img from "../../../public/static/Demon-Slayer.png";
 
 const SectionCard = (props) => {
-const { title } = props
+  const { title, videos ,size } = props;
+  // console.log({ videos });
 
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
       <div className={styles.cardWrapper}>
-        <Card id="0" imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
-        <Card imgUrl={img} size="large" />
+        {videos.map((video , idx) => { 
+          return <Card key={idx} id={idx} imgUrl={video.ImgUrl} size={size} />;
+        })}
       </div>
     </section>
   );
