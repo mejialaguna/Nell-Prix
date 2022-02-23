@@ -46,8 +46,7 @@ const NavBar = (props) => {
           <li className={styles.navItem2} onClick={handleOnclickMyList}>
             List
           </li>
-        </ul>{" "}
-        {/* <img src= /> */}
+        </ul>
         <nav className={styles.navContainer}>
           <div>
             <button onClick={handleDropDown} className={styles.usernameBtn}>
@@ -58,7 +57,6 @@ const NavBar = (props) => {
                 height={24}
                 alt="expand-Icon"
               />
-              {/* expand icon goes here */}
             </button>
             {navDropDown && (
               <div className={styles.navDropDown}>

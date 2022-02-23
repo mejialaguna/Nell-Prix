@@ -4,7 +4,6 @@ import styles from "./Banner.module.css";
 
 const Banner = (props) => {
   const { title, subtitle, imgUrl } = props;
-{/* <img src="https://img.icons8.com/fluency-systems-filled/48/000000/play.png" />; */}
   const handleOnPlay = () => {
     console.log("clicked");
   };
