@@ -5,30 +5,19 @@ import NavBar from "../components/NavBar";
 // import Card from "../components/Card"
 import img from "../public/static/Demon-Slayer.png"
 import SectionCard from "../components/Card/SectionCard";
-import { getVideos } from "../lib/index";
+import getVideos from "../lib/index";
 
+// AIzaSyBDQ0LzorDtbEBAqpjwI9dCWQbnZWfoQn4;
 
+// AIzaSyAhvihP-UubTEWw78EUPII6H1YGXFPSbys;
+
+// AIzaSyBgBJWtWtZJTnvkDMI4QGAP5sKN5xW_8ko;
 
 export default function Home() {
-
-  // console.log(getVideos())
-  const disneyVideos = [
-    {
-      ImgUrl: img,
-    },
-    {
-      ImgUrl: img,
-    },
-    {
-      ImgUrl: img,
-    },
-    {
-      ImgUrl: img,
-    },
-    {
-      ImgUrl: img,
-    },
-  ];
+  
+  console.log(getVideos())
+  
+  const disneyVideos = getVideos()
 
   return (
     <div className={styles.container}>
