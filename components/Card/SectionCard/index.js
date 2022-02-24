@@ -1,6 +1,5 @@
 import styles from "./SectionCard.module.css";
 import Card from "../index";
-import img from "../../../public/static/Demon-Slayer.png";
 
 const SectionCard = (props) => {
   const { title, videos ,size } = props;

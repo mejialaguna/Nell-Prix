@@ -2,16 +2,9 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css"
 import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
-// import Card from "../components/Card"
-import img from "../public/static/Demon-Slayer.png"
 import SectionCard from "../components/Card/SectionCard";
 import getVideos from "../lib/index";
 
-// AIzaSyBDQ0LzorDtbEBAqpjwI9dCWQbnZWfoQn4;
-
-// AIzaSyAhvihP-UubTEWw78EUPII6H1YGXFPSbys;
-
-// AIzaSyBgBJWtWtZJTnvkDMI4QGAP5sKN5xW_8ko;
 
 export default function Home() {
   
@@ -37,6 +30,7 @@ export default function Home() {
       <div className={styles.sectionWrapper}>
         <SectionCard title="Disney" videos={disneyVideos} size="large" />
         <SectionCard title="Productivity" videos={disneyVideos} size="medium" />
+        <SectionCard title="Others" videos={disneyVideos} size="small" />
       </div>
     </div>
   );
