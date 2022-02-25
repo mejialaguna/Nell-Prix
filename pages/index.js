@@ -5,12 +5,17 @@ import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
 import getVideos from "../lib/index";
 
-export default function Home() {
-  console.log(getVideos());
 
-  const disneyVideos = getVideos()
+export async function getServerSideProps () {
+  const disneyVideos = await getVideos();
+  // console.log(disneyVideos);
+  // ssr
+  return { props: { disneyVideos } };
+}; 
 
-  return (
+export default function Home({disneyVideos}) {
+
+    return (
     <div className={styles.container}>
       <Head>
         <title>Nel-Prix</title>
