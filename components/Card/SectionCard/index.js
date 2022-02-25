@@ -14,7 +14,7 @@ const SectionCard = (props) => {
             <Card
               key={idx}
               id={idx}
-              imgUrl={video.snippet.thumbnails.high.url}
+              imgUrl={video.imgUrl}
               size={size}
             />
           );

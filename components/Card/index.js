@@ -2,7 +2,7 @@ import styles from "./Card.module.css";
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import cls from "classnames";
+import clsx from "classnames";
 
 const Card = (props) => {
   const { imgUrl, size = "medium" , id } = props;
@@ -27,7 +27,7 @@ const Card = (props) => {
     <div className={styles.container} >
       <motion.div
         id={id}
-        className={cls(styles.imgMotionWrapper, classMap[size])}
+        className={clsx(styles.imgMotionWrapper, classMap[size])}
         whileHover={{ ...scale }}
       >
         <Image

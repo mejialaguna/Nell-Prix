@@ -1,15 +1,13 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css"
+import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
 import getVideos from "../lib/index";
 
-
 export default function Home() {
-  
-  console.log(getVideos())
-  
+  console.log(getVideos());
+
   const disneyVideos = getVideos()
 
   return (
