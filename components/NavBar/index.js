@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
-import NetflixLogo from "../../public/static/netflix.svg"
+import netflixLogo from "../../public/static/netflix.svg"
 import DropDownIcon from "../../public/static/dropDown.png"
 
 const NavBar = (props) => {
@@ -32,7 +32,7 @@ const NavBar = (props) => {
         <a className={styles.logoLink} href="/">
           <div className={styles.logoWrapper}>
             <Image
-              src={NetflixLogo}
+              src={netflixLogo}
               width="128px"
               height="34px"
               alt="netflix logo"
