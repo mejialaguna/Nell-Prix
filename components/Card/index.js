@@ -24,13 +24,13 @@ const Card = (props) => {
   const scale = String(id) === "0" ? { scaleY: 1.1 } : { scale: 1.1 }; // String is transforming id into a string to be able to strictly compared with the "0"
 
   return (
-    <div className={styles.container} >
+    <div className={styles.container} style={{marginRight: "10px"}}>
       <motion.div
         id={id}
         className={clsx(styles.imgMotionWrapper, classMap[size])}
         whileHover={{ ...scale }}
       >
-        <Image
+        <Image          
           className={styles.cardImg}
           onError={handleError}
           src={imgSource}

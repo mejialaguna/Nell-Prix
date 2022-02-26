@@ -3,19 +3,20 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
-import getVideos from "../lib/index";
+import {getVideos , getMostPopularVideos} from "../lib/index";
 
+export async function getServerSideProps() {
+  const disneyVideos = await getVideos("disney trailer");
+  const bestAnime = await getVideos("best animes");
+  const marvelMovies = await getVideos("marvel movies");
+  const Popular = await getMostPopularVideos("most Popular");
 
-export async function getServerSideProps () {
-  const disneyVideos = await getVideos();
-  // console.log(disneyVideos);
   // ssr
-  return { props: { disneyVideos } };
-}; 
+  return { props: { disneyVideos, Popular, bestAnime, marvelMovies } };
+}
 
-export default function Home({disneyVideos}) {
-
-    return (
+export default function Home({ disneyVideos, Popular , bestAnime , marvelMovies}) {
+  return (
     <div className={styles.container}>
       <Head>
         <title>Nel-Prix</title>
@@ -32,8 +33,9 @@ export default function Home({disneyVideos}) {
       />
       <div className={styles.sectionWrapper}>
         <SectionCard title="Disney" videos={disneyVideos} size="large" />
-        <SectionCard title="Productivity" videos={disneyVideos} size="medium" />
-        <SectionCard title="Others" videos={disneyVideos} size="small" />
+        <SectionCard title="Best Anime" videos={bestAnime} size="small" />
+        <SectionCard title="Marvel Movies" videos={marvelMovies} size="medium" />
+        <SectionCard title="Popular" videos={Popular} size="small" />
       </div>
     </div>
   );

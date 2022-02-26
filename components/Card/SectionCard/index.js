@@ -3,7 +3,7 @@ import Card from "../index";
 
 const SectionCard = (props) => {
   const { title, videos = [] ,size } = props;  // if videos doesn't exist or is undefined , just assign  an empty array. (app wont break )
-  // console.log({ videos });
+  console.log({ videos });
 
   return (
     <section className={styles.container}>
