@@ -2,9 +2,10 @@ import styles from "./NavBar.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import netflixLogo from "../../public/static/netflix.svg"
 import DropDownIcon from "../../public/static/dropDown.png"
+import {magicLinkMetaData} from "../../lib/magic-Link/index"
 
 const NavBar = (props) => {
   const { username } = props;
@@ -12,6 +13,13 @@ const NavBar = (props) => {
   const router = useRouter();
 
   const [ navDropDown , setNavDropDown] =  useState(false)
+
+
+  // useEffect(() => {
+  //   magicLinkMetaData();
+  // }, [magicLinkMetaData]);
+  
+  console.log(magicLinkMetaData);
 
   const handleOnclickHome = (e) => {
     e.preventDefault();

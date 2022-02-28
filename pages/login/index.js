@@ -4,12 +4,16 @@ import styles from "../../styles/login.module.css";
 import netflixLogo from "../../public/static/netflix.svg";
 import { useState } from "react";
 import clsx from "classnames";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { magicLink } from "../../lib/magic-Link/index";
+import Loading from "../../components/Loading";
 
 const regex =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const Login = function () {
+  const [loading, setLoading] = useState(false);
   const [isValid, SetIsValid] = useState(false);
   const [userMsg, setUserMsg] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +24,7 @@ const Login = function () {
     const email = e.target.value;
     validateEmail(email);
     setEmail(email);
+    setUserMsg("");
   }
 
   function validateEmail(email) {
@@ -30,19 +35,37 @@ const Login = function () {
     }
   }
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
 
     if (isValid && email) {
-      setUserMsg("welcome")
-      // console.log(userMsg);
-      router.push("/");
+      // log in a user by their email
+      setLoading(true);
+      const dIdToken = await magicLink(email);
+      if (dIdToken) {
+        router.push("/");
+      }
+      console.log({ dIdToken });
     } else if (!isValid) {
       setUserMsg("invalid Email address");
-      // console.log(userMsg);
       setEmail("");
+      setLoading(false)
     }
   }
+
+  useEffect(() => {
+    function handleComplete() {
+      setLoading(false)
+    }
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    }
+  }, [router])
+  
+
 
   return (
     <div className={styles.container}>
@@ -67,7 +90,7 @@ const Login = function () {
       <main className={styles.main}>
         <div className={styles.mainWrapper}>
           <h1 className={styles.signInHeader}> Sign In</h1>
-          <input
+           <input
             onChange={handleOnChange}
             label="Email Address"
             name="Email Address"
@@ -77,13 +100,19 @@ const Login = function () {
             placeholder="Email address"
           />
           <p className={styles.userMsg}> {userMsg}</p>
+          {loading ? (
+            <Loading /> 
+            
+          ) : (
           <button
-            onClick={handleLogin}
-            className={clsx(styles.loginBtn, !email && styles.disabled)}
-            disabled={!email}
-          >
-            SignIn
-          </button>
+              onClick={handleLogin}
+              className={clsx(styles.loginBtn, !email && styles.disabled)}
+              disabled={!email}
+            >
+              Sign In
+            </button>
+              
+          )}
         </div>
       </main>
     </div>
@@ -91,3 +120,6 @@ const Login = function () {
 };
 
 export default Login;
+
+
+ 

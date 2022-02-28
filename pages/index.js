@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
-import {getVideos , getMostPopularVideos} from "../lib/index";
+import { getVideos, getMostPopularVideos } from "../lib/index";
 
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disneyTrailer");
@@ -15,7 +15,12 @@ export async function getServerSideProps() {
   return { props: { disneyVideos, Popular, bestAnime, marvelMovies } };
 }
 
-export default function Home({ disneyVideos, Popular , bestAnime , marvelMovies}) {
+export default function Home({
+  disneyVideos,
+  Popular,
+  bestAnime,
+  marvelMovies,
+}) {
   return (
     <div className={styles.container}>
       <Head>
