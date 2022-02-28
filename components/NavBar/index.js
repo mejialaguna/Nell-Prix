@@ -7,19 +7,24 @@ import netflixLogo from "../../public/static/netflix.svg"
 import DropDownIcon from "../../public/static/dropDown.png"
 import {magicLinkMetaData} from "../../lib/magic-Link/index"
 
-const NavBar = (props) => {
-  const { username } = props;
+const NavBar = () => {
+  const [ username ,  setUsername] = useState("")
 
   const router = useRouter();
 
   const [ navDropDown , setNavDropDown] =  useState(false)
 
-
-  // useEffect(() => {
-  //   magicLinkMetaData();
-  // }, [magicLinkMetaData]);
   
-  console.log(magicLinkMetaData);
+  // console.log(magicLinkMetaData())
+
+  useEffect( async () => {
+    const data = await magicLinkMetaData();
+    if (data) {
+      setUsername(data.email)
+    }
+    console.log({data})
+  }, [])
+  
 
   const handleOnclickHome = (e) => {
     e.preventDefault();
