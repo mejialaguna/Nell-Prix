@@ -2,29 +2,25 @@ import styles from "./NavBar.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState , useEffect } from "react";
-import netflixLogo from "../../public/static/netflix.svg"
-import DropDownIcon from "../../public/static/dropDown.png"
-import {magicLinkMetaData} from "../../lib/magic-Link/index"
+import { useState, useEffect } from "react";
+import netflixLogo from "../../public/static/netflix.svg";
+import DropDownIcon from "../../public/static/dropDown.png";
+import { magicLinkMetaData, signOut } from "../../lib/magic-Link/index";
 
 const NavBar = () => {
-  const [ username ,  setUsername] = useState("")
+  const [username, setUsername] = useState("");
 
   const router = useRouter();
 
-  const [ navDropDown , setNavDropDown] =  useState(false)
+  const [navDropDown, setNavDropDown] = useState(false);
 
-  
-  // console.log(magicLinkMetaData())
-
-  useEffect( async () => {
+  useEffect(async () => {
     const data = await magicLinkMetaData();
     if (data) {
-      setUsername(data.email)
+      setUsername(data.email);
     }
-    console.log({data})
-  }, [])
-  
+    console.log({ data });
+  }, []);
 
   const handleOnclickHome = (e) => {
     e.preventDefault();
@@ -36,9 +32,15 @@ const NavBar = () => {
   };
 
   const handleDropDown = () => {
-    setNavDropDown(!navDropDown)
+    setNavDropDown(!navDropDown);
+  };
+
+  async function handleSignOut(e) {
+    e.preventDefault();
+    signOut();
+    router.push("/login");
   }
-  // <img src= />;
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -74,9 +76,9 @@ const NavBar = () => {
             {navDropDown && (
               <div className={styles.navDropDown}>
                 <div>
-                  <Link href="/login">
-                    <a className={styles.linkName}>Log Out</a>
-                  </Link>
+                  <a className={styles.linkName} onClick={handleSignOut}>
+                    Log Out
+                  </a>
                   <div className={styles.lineWrapper}></div>
                 </div>
               </div>
