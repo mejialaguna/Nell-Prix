@@ -1,7 +1,7 @@
 import styles from "./NavBar.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Link from "next/link";
+// import Link from "next/link";
 import { useState, useEffect } from "react";
 import netflixLogo from "../../public/static/netflix.svg";
 import DropDownIcon from "../../public/static/dropDown.png";

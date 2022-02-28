@@ -11,16 +11,27 @@ export async function getServerSideProps() {
   const marvelMovies = await getVideos("marvelMovies");
   const Popular = await getMostPopularVideos();
 
+  //  Promise.all([
+  //     getVideos("disneyTrailer"),
+  //     getVideos("bestAnime"),
+  //     getVideos("marvelMovies"),
+  //     getMostPopularVideos(),
+  //   ]).then((responses) => {
+  //     console.log(responses)
+
+  //   })
   // ssr
   return { props: { disneyVideos, Popular, bestAnime, marvelMovies } };
 }
 
 export default function Home({
   disneyVideos,
-  Popular,
+  popular,
   bestAnime,
   marvelMovies,
 }) {
+  // console.log(data)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -44,7 +55,7 @@ export default function Home({
             videos={marvelMovies}
             size="medium"
           />
-          <SectionCard title="Popular" videos={Popular} size="small" />
+          <SectionCard title="Popular" videos={popular} size="small" />
         </div>
       </div>
     </div>
