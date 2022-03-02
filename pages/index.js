@@ -11,15 +11,6 @@ export async function getServerSideProps() {
   const marvelMovies = await getVideos("marvelMovies");
   const Popular = await getMostPopularVideos();
 
-  //  Promise.all([
-  //     getVideos("disneyTrailer"),
-  //     getVideos("bestAnime"),
-  //     getVideos("marvelMovies"),
-  //     getMostPopularVideos(),
-  //   ]).then((responses) => {
-  //     console.log(responses)
-
-  //   })
   // ssr
   return { props: { disneyVideos, Popular, bestAnime, marvelMovies } };
 }

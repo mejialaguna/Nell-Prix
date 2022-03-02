@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(async () => {
     const isLogIn = await isLoggedIn();
-    if (isLogIn) {
+    if ( isLogIn) {
       // setIsLoading(false);
       router.push("/");
     } else {

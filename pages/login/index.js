@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { magicLink } from "../../lib/magic-Link/index";
 import Loading from "../../components/Loading";
+import { isLoggedIn } from "../../lib/magic-Link/index";
 
 const regex =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -53,6 +54,16 @@ const Login = function () {
     }
   }
 
+
+  useEffect(() => {
+    const loggedIn = isLoggedIn();
+    if (loggedIn) {
+      router.back();
+    }
+  }, [])
+  
+
+
   useEffect(() => {
     function handleComplete() {
       setLoading(false)
@@ -65,7 +76,8 @@ const Login = function () {
     }
   }, [router])
   
-
+ 
+  
 
   return (
     <div className={styles.container}>
