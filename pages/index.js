@@ -32,6 +32,7 @@ export default function Home({
       <div className={styles.main}>
         <NavBar username="JLML" />
         <Banner
+          videoId={"jiJu4K2jems"}
           title="Demon Slayer"
           subtitle="Let the hunting begin..."
           imgUrl={

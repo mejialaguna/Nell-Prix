@@ -55,12 +55,12 @@ const Login = function () {
   }
 
 
-  useEffect(() => {
-    const loggedIn = isLoggedIn();
-    if (loggedIn) {
-      router.back();
-    }
-  }, [])
+  // useEffect(() => {
+  //   const loggedIn = isLoggedIn();
+  //   if (loggedIn) {
+  //     router.back();
+  //   }
+  // }, [])
   
 
 

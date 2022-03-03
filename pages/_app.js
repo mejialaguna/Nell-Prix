@@ -8,19 +8,19 @@ function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(async () => {
-    const isLogIn = await isLoggedIn();
-    if ( isLogIn) {
-      // setIsLoading(false);
-      router.push("/");
-    } else {
-      // setIsLoading(false);
-      router.push("/login");
-    }
-  }, []);
+  // useEffect(async () => {
+  //   const isLogIn = await isLoggedIn();
+  //   if ( isLogIn) {
+  //     // setIsLoading(false);
+  //     router.push("/");
+  //   } else {
+  //     // setIsLoading(false);
+  //     router.push("/login");
+  //   }
+  // }, []);
 
-
-  useEffect(() => { //helps with my flickering
+  useEffect(() => {
+    //helps with my flickering
     function handleComplete() {
       setIsLoading(false);
     }
@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  return isLoading ? <Loading /> : <Component {...pageProps} />;
+  return <Component {...pageProps} />; //isLoading ? <Loading /> :
 }
 
 export default MyApp;

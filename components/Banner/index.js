@@ -6,10 +6,10 @@ import { useRouter } from "next/router";
 const Banner = (props) => {
   const router = useRouter()
 
-  const { title, subtitle, imgUrl } = props;
+  const { title, subtitle, imgUrl , videoId } = props;
   const handleOnPlay = () => {
     console.log("clicked");
-    router.push(`video/${"thisNutz"}`)
+    router.push(`video/${videoId}`)
   };
   return (
     <div className={styles.container}>
