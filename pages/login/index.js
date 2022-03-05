@@ -21,7 +21,7 @@ const Login = function () {
   const router = useRouter();
 
   function handleOnChange(e) {
-    console.log("event", e.target.value);
+    // console.log("event", e.target.value);
     const email = e.target.value;
     validateEmail(email);
     setEmail(email);
@@ -46,7 +46,7 @@ const Login = function () {
       if (dIdToken) {
         router.push("/");
       }
-      console.log({ dIdToken });
+      // console.log({ dIdToken });
     } else if (!isValid) {
       setUserMsg("invalid Email address");
       setEmail("");

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const SectionCard = (props) => {
   const { title, videos = [], size } = props; // if videos doesn't exist or is undefined , just assign  an empty array. (app wont break )
-  console.log({ videos });
+  // console.log({ videos });
 
   return (
     <section className={styles.container}>
@@ -12,7 +12,7 @@ const SectionCard = (props) => {
       <div className={styles.cardWrapper}>
         {videos.map((video, idx) => { 
           return (
-            <Link href={`/video/id`} >
+            <Link href={`/video/${idx}`} >
               <Card key={idx} id={idx} imgUrl={video.imgUrl} size={size} />
             </Link>
           );
