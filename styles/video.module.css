@@ -107,8 +107,8 @@
 @media (min-width: 1024px) {
   .modal {
     top: 10%;
-    bottom: 40px;
-    width: 50%;
+    bottom:40px;
+    width: 60%;
   }
 }
 

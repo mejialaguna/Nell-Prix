@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import styles from "../../styles/video.module.css";
-import clsx from "classnames";
+import cls from "classnames";
 import { getYouTubeVideoById } from "../../lib/index";
 import NavBar from "../../components/NavBar";
 Modal.setAppElement("#__next");
@@ -10,10 +10,10 @@ Modal.setAppElement("#__next");
 export async function getStaticProps(staticProps) {
   const params = staticProps.params.id;
 
-  const video = await getYouTubeVideoById("jiJu4K2jems");
-
+  const video = await getYouTubeVideoById(params);
+  
   // ISR incremental site regeneration way --- similar to  ssr server side regeneration // fetch data from api from here getStaticProps
-  // console.log({ videoData });
+  
   return {
     props: {
       video: video[0],
@@ -47,7 +47,6 @@ function videoId({ video }) {
   const vId = router.query.id;
   console.log({ vId });
   return (
-    <>
       <div className={styles.container}>
         <NavBar />
         <Modal
@@ -78,11 +77,11 @@ function videoId({ video }) {
                 <p className={styles.description}> {description}</p>
               </div>
               <div className={styles.col2}>
-                <p className={clsx(styles.subText, styles.subTextWrapper)}>
+                <p className={cls(styles.subText, styles.subTextWrapper)}>
                   <span className={styles.textColor}>Cast:</span>
                   <span className={styles.channelTitle}> {channelTitle}</span>
                 </p>
-                <p className={clsx(styles.subText, styles.subTextWrapper)}>
+                <p className={cls(styles.subText, styles.subTextWrapper)}>
                   <span className={styles.textColor}>viewCount :</span>
                   <span className={styles.channelTitle}> {viewCount}</span>
                 </p>
@@ -91,7 +90,6 @@ function videoId({ video }) {
           </div>
         </Modal>
       </div>
-    </>
   );
 }
 

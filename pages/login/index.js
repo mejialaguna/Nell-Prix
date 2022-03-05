@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "../../styles/login.module.css";
 import netflixLogo from "../../public/static/netflix.svg";
 import { useState } from "react";
-import clsx from "classnames";
+import cls from "classnames";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { magicLink } from "../../lib/magic-Link/index";
@@ -21,7 +21,6 @@ const Login = function () {
   const router = useRouter();
 
   function handleOnChange(e) {
-    // console.log("event", e.target.value);
     const email = e.target.value;
     validateEmail(email);
     setEmail(email);
@@ -46,7 +45,6 @@ const Login = function () {
       if (dIdToken) {
         router.push("/");
       }
-      // console.log({ dIdToken });
     } else if (!isValid) {
       setUserMsg("invalid Email address");
       setEmail("");
@@ -118,7 +116,7 @@ const Login = function () {
           ) : (
           <button
               onClick={handleLogin}
-              className={clsx(styles.loginBtn, !email && styles.disabled)}
+              className={cls(styles.loginBtn, !email && styles.disabled)}
               disabled={!email}
             >
               Sign In

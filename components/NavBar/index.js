@@ -19,7 +19,6 @@ const NavBar = () => {
     if (data) {
       setUsername(data.email);
     }
-    console.log({ data });
   }, []);
 
   const handleOnclickHome = (e) => {

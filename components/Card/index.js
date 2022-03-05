@@ -2,11 +2,10 @@ import styles from "./Card.module.css";
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import clsx from "classnames";
+import cls from "classnames";
 
 const Card = (props) => {
-  const { imgUrl, size = "medium" , id } = props;
-
+  const { imgUrl, size = "medium", id } = props;
   const [ imgSource , setImgSource ] = useState(imgUrl)
 
   const classMap = {
@@ -24,13 +23,13 @@ const Card = (props) => {
   const scale = String(id) === "0" ? { scaleY: 1.1 } : { scale: 1.1 }; // String is transforming id into a string to be able to strictly compared with the "0"
 
   return (
-    <div className={styles.container} style={{marginRight: "10px"}}>
+    <div className={styles.container} style={{ marginRight: "10px" }}>
       <motion.div
         id={id}
-        className={clsx(styles.imgMotionWrapper, classMap[size])}
+        className={cls(styles.imgMotionWrapper, classMap[size])}
         whileHover={{ ...scale }}
       >
-        <Image          
+        <Image
           className={styles.cardImg}
           onError={handleError}
           src={imgSource}

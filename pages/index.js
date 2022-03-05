@@ -21,7 +21,6 @@ export default function Home({
   bestAnime,
   marvelMovies,
 }) {
-  // console.log(data)
 
   return (
     <div className={styles.container}>
