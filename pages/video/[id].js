@@ -11,26 +11,26 @@ export async function getStaticProps(staticProps) {
   const params = staticProps.params.id;
 
   const video = await getYouTubeVideoById(params);
-  
+
   // ISR incremental site regeneration way --- similar to  ssr server side regeneration // fetch data from api from here getStaticProps
   
   return {
     props: {
-      video: video[0],
+      video: video.length > 0 ? video[0] : {},
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 10 seconds
     revalidate: 10, // In seconds
   };
-}
+} 
 
 export async function getStaticPaths() {
   const listOfVideos = ["jiJu4K2jems", "1VIZ89FEjYI", "TcMBFSGVi1c"];
 
   // Get the paths we want to pre-render based on posts
-  const paths = listOfVideos.map((id) => ({
-    params: { id: id.toString() },
+  const paths = listOfVideos.map((videoId) => ({
+    params: { id: videoId.toString() },
   }));
 
   // We'll pre-render only these paths at build time.
@@ -41,11 +41,10 @@ export async function getStaticPaths() {
 
 function videoId({ video }) {
   const { title, publishTime, description, channelTitle, viewCount } = video;
-
+  console.log({video})
   const router = useRouter();
 
   const vId = router.query.id;
-  console.log({ vId });
   return (
       <div className={styles.container}>
         <NavBar />
