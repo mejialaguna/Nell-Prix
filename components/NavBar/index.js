@@ -16,6 +16,7 @@ const NavBar = () => {
 
   useEffect(async () => {
     const data = await magicLinkMetaData();
+    console.log({data})
     if (data) {
       setUsername(data.email);
     }
