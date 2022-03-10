@@ -7,26 +7,28 @@ async function login(req, res) {
       const auth = req.headers.authorization;
       const didToken = auth ? auth.substring(7) : "";
 
-      const metadata = await magicAdmin.users.getMetadataByToken(didToken);
-      console.log({ metadata });
+      const { issuer, publicAddress, email } =
+        await magicAdmin.users.getMetadataByToken(didToken);
+      // console.log("line 12 " ,{didToken})
+      console.log({ issuer, publicAddress, email });
       const token = jwt.sign(
         {
-          ...metadata,
+          issuer, publicAddress , email,
           iat: Math.floor(Date.now() / 1000),
           exp: Math.floor(Date.now() / 1000 + 7 * 24 * 60 * 60),
           "https://hasura.io/jwt/claims": {
             "x-hasura-allowed-roles": ["user", "admin"],
             "x-hasura-default-role": "user",
-            "x-hasura-user-id": `${metadata.issuer}`,
+            "x-hasura-user-id": `${issuer}`,
           },
         },
         `${process.env.jwt_secret_key}`
       );
-console.log({token})
+      console.log("line 27" ,{ token });
       res.send({
-        message: { metadata },
+        message: { issuer, publicAddress, email },
         didToken: didToken,
-        token,
+        // token,
       });
     } catch (err) {
       console.error("something went wrong", err);

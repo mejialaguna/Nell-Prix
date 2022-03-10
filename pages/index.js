@@ -4,7 +4,7 @@ import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
 import { getVideos, getMostPopularVideos } from "../lib/index";
-import { fetchUsers } from "../lib/db";
+import { startFetchMyQuery } from "../lib/db";
 
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disneyTrailer");
@@ -22,8 +22,9 @@ export default function Home({
   bestAnime,
   marvelMovies,
 }) {
+  
+  startFetchMyQuery()
 
-  fetchUsers();
   return (
     <div className={styles.container}>
       <Head>
