@@ -42,7 +42,6 @@ const Login = function () {
       // log in a user by their email
       setLoading(true);
       const dIdToken = await magicLink(email);
-      // console.log({dIdToken},  "------------------------")
       if (dIdToken) {
         router.push("/");
       }

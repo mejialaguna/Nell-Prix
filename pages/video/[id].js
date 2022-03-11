@@ -41,7 +41,6 @@ export async function getStaticPaths() {
 
 function videoId({ video }) {
   const { title, publishTime, description, channelTitle, viewCount } = video;
-  console.log({video})
   const router = useRouter();
 
   const vId = router.query.id;
