@@ -1,15 +1,18 @@
 import { magicAdmin } from "../../lib/magic-Server";
 import jwt from "jsonwebtoken";
-import { isNewUser, createNewUser } from "../../lib/db/index";
+import { isNewUser, createNewUser } from "../../lib/db";
+import { setTokenCookie } from "../../lib/cookie";
 
-async function login(req, res) {
+
+
+export default async function login(req, res) {
   if (req.method === "POST") {
     try {
       const auth = req.headers.authorization;
-      const didToken = auth ? auth.substring(7) : "";
+      const didToken = auth ? auth.substr(7) : "";
 
-      const metadata =
-        await magicAdmin.users.getMetadataByToken(didToken);
+      const metadata = await magicAdmin.users.getMetadataByToken(didToken);
+
       const token = jwt.sign(
         {
           ...metadata,
@@ -21,26 +24,22 @@ async function login(req, res) {
             "x-hasura-user-id": `${metadata.issuer}`,
           },
         },
-        `${process.env.jwt_secret_key}`
+        process.env.JWT_SECRET
       );
-      
+      console.log({ token })
+
       const isNewUserQuery = await isNewUser(token, metadata.issuer);
+      isNewUserQuery && (await createNewUser(token, metadata));
+      // setTokenCookie(token, res);
+      const cookie = setTokenCookie(token);      
+      console.log({ cookie });
       
-      if (isNewUserQuery) {
-        // const createNewUserMutation = await createNewUser()
-        res.send({message: "new user"})
-      } else {
-        res.send({message : "not a new user"})
-      }
-      
-    } catch (err) {
-      console.error("something went wrong", err);
-      res.status(500);
-      res.send({ message: "something went wrong", err });
+      res.send({ done: true });
+    } catch (error) {
+      console.error("Something went wrong logging in", error);
+      res.status(500).send({ done: false });
     }
   } else {
-    res.send({ message: "wrong method" });
+    res.send({ done: false });
   }
 }
-
-export default login;
