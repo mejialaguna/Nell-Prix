@@ -43,15 +43,29 @@ const Login = function () {
       setLoading(true);
       const dIdToken = await magicLink(email);
       if (dIdToken) {
-        router.push("/");
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${dIdToken}`,
+            "content-type": "application.json",
+          },
+        });
+        const loggedInResponse = await response.json();
+        if (loggedInResponse.done) {
+          router.push("/");
+          console.log({ loggedInResponse });
+        } else {
+            setUserMsg("invalid Email address");
+            setEmail("");
+            setLoading(false);
+        }
       }
     } else if (!isValid) {
       setUserMsg("invalid Email address");
       setEmail("");
-      setLoading(false)
+      setLoading(false);
     }
   }
-
 
   // useEffect(() => {
   //   const loggedIn = isLoggedIn();
@@ -59,23 +73,18 @@ const Login = function () {
   //     router.back();
   //   }
   // }, [])
-  
-
 
   useEffect(() => {
     function handleComplete() {
-      setLoading(false)
+      setLoading(false);
     }
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
     return () => {
       router.events.off("routeChangeComplete", handleComplete);
       router.events.off("routeChangeError", handleComplete);
-    }
-  }, [router])
-  
- 
-  
+    };
+  }, [router]);
 
   return (
     <div className={styles.container}>
@@ -100,7 +109,7 @@ const Login = function () {
       <main className={styles.main}>
         <div className={styles.mainWrapper}>
           <h1 className={styles.signInHeader}> Sign In</h1>
-           <input
+          <input
             onChange={handleOnChange}
             label="Email Address"
             name="Email Address"
@@ -111,17 +120,15 @@ const Login = function () {
           />
           <p className={styles.userMsg}> {userMsg}</p>
           {loading ? (
-            <Loading /> 
-            
+            <Loading />
           ) : (
-          <button
+            <button
               onClick={handleLogin}
               className={cls(styles.loginBtn, !email && styles.disabled)}
               disabled={!email}
             >
               Sign In
             </button>
-              
           )}
         </div>
       </main>
@@ -130,6 +137,3 @@ const Login = function () {
 };
 
 export default Login;
-
-
- 
