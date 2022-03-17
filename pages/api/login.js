@@ -9,6 +9,7 @@ export default async function login(req, res) {
   if (req.method === "POST") {
     try {
       const auth = req.headers.authorization;
+      console.log("------------line 12 0" , {req: req.headers})
       const didToken = auth ? auth.substr(7) : "";
 
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
@@ -30,9 +31,9 @@ export default async function login(req, res) {
 
       const isNewUserQuery = await isNewUser(token, metadata.issuer);
       isNewUserQuery && (await createNewUser(token, metadata));
-      // setTokenCookie(token, res);
-      const cookie = setTokenCookie(token , res);      
-      console.log( cookie );
+      setTokenCookie(token, res)
+      // const cookie = setTokenCookie(token , res);      
+    
       
       res.send({ done: true });
     } catch (error) {

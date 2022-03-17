@@ -42,24 +42,26 @@ const Login = function () {
       // log in a user by their email
       setLoading(true);
       const dIdToken = await magicLink(email);
-      if (dIdToken) {
-        const response = await fetch("/api/login", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${dIdToken}`,
-            "content-type": "application.json",
-          },
-        });
-        const loggedInResponse = await response.json();
-        if (loggedInResponse.done) {
-          router.push("/");
-          console.log({ loggedInResponse });
-        } else {
+      console.log({dIdToken})
+        if (dIdToken) {
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${dIdToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          const loggedInResponse = await response.json();
+          if (loggedInResponse.done) {
+            router.push("/");
+            console.log({ loggedInResponse });
+          } else {
             setUserMsg("invalid Email address");
             setEmail("");
             setLoading(false);
+          }
         }
-      }
     } else if (!isValid) {
       setUserMsg("invalid Email address");
       setEmail("");
