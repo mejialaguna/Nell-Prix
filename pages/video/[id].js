@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import styles from "../../styles/video.module.css";
@@ -42,10 +42,25 @@ export async function getStaticPaths() {
 }
 
 function videoId({ video }) {
+  const [like, setLike] = useState(false);
+  const [disLike, setDisLike] = useState(false);
   const { title, publishTime, description, channelTitle, viewCount } = video;
   const router = useRouter();
 
   const vId = router.query.id;
+
+  function handleToggleLike() {
+    setLike(true);
+    setDisLike(false);
+  }
+
+  function handleToggleDisLike() {
+    setDisLike(true);
+    setLike(false);
+
+    console.log("Dislike");
+  }
+
   return (
     <div className={styles.container}>
       <NavBar />
@@ -70,15 +85,15 @@ function videoId({ video }) {
           />
           <div className={styles.likeDislikeBtnWrapper}>
             <div className={styles.likeBtnWrapper}>
-              <button>
+              <button onClick={handleToggleLike}>
                 <div className={styles.btnWrapper}>
-                  <Like />
+                  <Like selected={like} />
                 </div>
               </button>
             </div>
-            <button>
+            <button onClick={handleToggleDisLike}>
               <div className={styles.btnWrapper}>
-                <DisLike />
+                <DisLike selected={disLike} />
               </div>
             </button>
           </div>
