@@ -52,6 +52,7 @@ function videoId({ video }) {
   function handleToggleLike() {
     setLike(true);
     setDisLike(false);
+    console.log("like");
   }
 
   function handleToggleDisLike() {
