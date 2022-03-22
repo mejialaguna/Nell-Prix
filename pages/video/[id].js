@@ -45,38 +45,19 @@ export async function getStaticPaths() {
 function videoId({ video }) {
   const [like, setLike] = useState(false);
   const [disLike, setDisLike] = useState(false);
-  
+
   const { title, publishTime, description, channelTitle, viewCount } = video;
   const router = useRouter();
 
   const vId = router.query.id;
-  console.log({vId})
+  console.log({ vId });
 
-   async function handleToggleLike() {
-     setLike(true);
-     setDisLike(false);
-     const response = await fetch("/api/stats", {
-       method: "POST",
-       body: JSON.stringify({
-         // updating an object into a json object
-         favorite: !like ? 1 : 0 ,
-         videoId: vId,
-       }),
-       headers: {
-         "Content-Type": "application/json",
-       },
-     });
-    console.log( await response.json() );
-  }
-
-  async function handleToggleDisLike() {
-    setDisLike(true);
-    setLike(false);
+  async function fetchRequestLikeAndDisliked(favorite) {
     const response = await fetch("/api/stats", {
       method: "POST",
       body: JSON.stringify({
         // updating an object into a json object
-        favorite: !disLike ? 0 : 1,
+        favorite: favorite,
         videoId: vId,
       }),
       headers: {
@@ -84,6 +65,21 @@ function videoId({ video }) {
       },
     });
     console.log(await response.json());
+    return response;
+  }
+
+  function handleToggleLike() {
+    setLike(true);
+    setDisLike(false);
+    const favorite = !like ? 1 : 0
+    fetchRequestLikeAndDisliked(favorite);
+  }
+
+  function handleToggleDisLike() {
+    setDisLike(true);
+    setLike(false);
+    const favorite = !disLike ? 0 : 1
+    fetchRequestLikeAndDisliked(favorite);
   }
 
   return (

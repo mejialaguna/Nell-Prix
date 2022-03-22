@@ -2,18 +2,19 @@ var jwt = require("jsonwebtoken");
 import { findVideoIdByUser, updateStats, insertStats } from "../../lib/db";
 
 async function stats(req, res) {
+  const token = req.cookies.token;
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = decoded.issuer;
+  const { favorite, watched = true, videoId } = req.body;
+  console.log({req: req.query})
+
   try {
-    if (req.method === "POST") {
-      const token = req.cookies.token;
-      if (token) {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const userId = decoded.issuer;
-        const { favorite, watched = true, videoId } = req.body;
+    if (token) {
+      if (videoId) {
+        const findVideo = await findVideoIdByUser(token, userId, videoId);
+        const videoExist = findVideo?.length > 0; // check if video exist to run update stats if not it will create one
 
-        if (videoId) {
-          const findVideo = await findVideoIdByUser(token, userId, videoId);
-          const videoExist = findVideo?.length > 0; // check if video exist to run update stats if not it will create one
-
+        if (req.method === "POST") {
           if (videoExist) {
             const response = await updateStats(token, {
               favorite,
@@ -32,12 +33,19 @@ async function stats(req, res) {
             res.send({ data: response });
           }
         } else {
-          res.status(500).send({message: "videoId is needed"})
+          if (videoExist) {
+            res.send(findVideo);
+          } else {
+            res.status(404);
+            res.send({ user: null, message: "video not found" });
+          }
         }
       } else {
-        res.status(403);
-        res.send({ message: "not working token is needed or broken" });
+        res.status(500).send({ message: "videoId is needed" });
       }
+    } else {
+      res.status(403);
+      res.send({ message: "not working token is needed or broken" });
     }
   } catch (error) {
     console.error({ message: "error has ocurred /stats", error });
