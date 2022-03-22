@@ -13,23 +13,26 @@ export default async function login(req, res) {
       const didToken = auth ? auth.substr(7) : "";
 
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
+      const { issuer, email, publicAddress } = metadata;
 
       const token = jwt.sign(
         {
-          ...metadata,
+          issuer,
+          email,
+          publicAddress,
           iat: Math.floor(Date.now() / 1000),
           exp: Math.floor(Date.now() / 1000 + 7 * 24 * 60 * 60),
           "https://hasura.io/jwt/claims": {
             "x-hasura-allowed-roles": ["user", "admin"],
             "x-hasura-default-role": "user",
-            "x-hasura-user-id": `${metadata.issuer}`,
+            "x-hasura-user-id": `${issuer}`,
           },
         },
         process.env.JWT_SECRET
       );
       console.log({ token })
 
-      const isNewUserQuery = await isNewUser(token, metadata.issuer);
+      const isNewUserQuery = await isNewUser(token, issuer);
       isNewUserQuery && (await createNewUser(token, metadata));
       setTokenCookie(token, res)
       // const cookie = setTokenCookie(token , res);      
