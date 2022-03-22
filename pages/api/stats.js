@@ -5,36 +5,38 @@ async function stats(req, res) {
   try {
     if (req.method === "POST") {
       const token = req.cookies.token;
-      console.log("line 7 ---------", { token });
       if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.issuer;
-        const videoId = req.query.videoId;
+        const { favorite, watched = true, videoId } = req.body;
+
+        if (videoId) {
           const findVideo = await findVideoIdByUser(token, userId, videoId);
-          const videoExist = findVideo?.length > 0;
-        console.log({ findVideo });
-        if (videoExist) {
-          const response = await updateStats(token, {
-            favorite: 1,
-            userId,
-            watched: false,
-            videoId: "mYfJxlgR2jw",
-          });
-          //   console.log({ response });
-          res.send({ message: "working update stats", response });
+          const videoExist = findVideo?.length > 0; // check if video exist to run update stats if not it will create one
+
+          if (videoExist) {
+            const response = await updateStats(token, {
+              favorite,
+              userId,
+              watched,
+              videoId,
+            });
+            res.send({ response });
+          } else {
+            const response = await insertStats(token, {
+              watched,
+              userId,
+              videoId,
+              favorite,
+            });
+            res.send({ data: response });
+          }
         } else {
-          const response = await insertStats(token, {
-            watched: false,
-            userId,
-            videoId,
-            favorite: 10,
-          });
-          console.log({ response });
-          res.send({ message: "working insert stats", response });
+          res.status(500).send({message: "videoId is needed"})
         }
       } else {
         res.status(403);
-        res.send({ message: "not working" });
+        res.send({ message: "not working token is needed or broken" });
       }
     }
   } catch (error) {

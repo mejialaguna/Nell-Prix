@@ -7,6 +7,7 @@ import { getYouTubeVideoById } from "../../lib/index";
 import NavBar from "../../components/NavBar";
 import Like from "../../components/icons/like-icons";
 import DisLike from "../../components/icons/dislike-icons";
+
 Modal.setAppElement("#__next");
 
 export async function getStaticProps(staticProps) {
@@ -44,22 +45,45 @@ export async function getStaticPaths() {
 function videoId({ video }) {
   const [like, setLike] = useState(false);
   const [disLike, setDisLike] = useState(false);
+  
   const { title, publishTime, description, channelTitle, viewCount } = video;
   const router = useRouter();
 
   const vId = router.query.id;
+  console.log({vId})
 
-  function handleToggleLike() {
-    setLike(true);
-    setDisLike(false);
-    console.log("like");
+   async function handleToggleLike() {
+     setLike(true);
+     setDisLike(false);
+     const response = await fetch("/api/stats", {
+       method: "POST",
+       body: JSON.stringify({
+         // updating an object into a json object
+         favorite: !like ? 1 : 0 ,
+         videoId: vId,
+       }),
+       headers: {
+         "Content-Type": "application/json",
+       },
+     });
+    console.log( await response.json() );
   }
 
-  function handleToggleDisLike() {
+  async function handleToggleDisLike() {
     setDisLike(true);
     setLike(false);
-
-    console.log("Dislike");
+    const response = await fetch("/api/stats", {
+      method: "POST",
+      body: JSON.stringify({
+        // updating an object into a json object
+        favorite: !disLike ? 0 : 1,
+        videoId: vId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(await response.json());
   }
 
   return (
