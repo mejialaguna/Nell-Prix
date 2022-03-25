@@ -9,7 +9,6 @@ export default async function login(req, res) {
   if (req.method === "POST") {
     try {
       const auth = req.headers.authorization;
-      // console.log("------------line 12 0" , {req: req.headers})
       const didToken = auth ? auth.substr(7) : "";
 
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);

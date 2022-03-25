@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import styles from "../../styles/video.module.css";
@@ -52,6 +52,29 @@ function videoId({ video }) {
   const vId = router.query.id;
   console.log({ vId });
 
+  useEffect(async () => {
+    const response = await fetch(`/api/stats?videoId=${vId} `, {
+      method: "GET", // GET method cant have body , to request info have to come from the query line 56
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (data.length > 0) {
+      const favorite = data[0].favorite;
+      if (favorite >= 1) {
+        setLike(true)
+      } else {
+        setDisLike(true)
+      }
+    }    
+
+    console.log({ data });
+    return data;
+  }, []);
+
+
   async function fetchRequestLikeAndDisliked(favorite) {
     const response = await fetch("/api/stats", {
       method: "POST",
@@ -64,21 +87,23 @@ function videoId({ video }) {
         "Content-Type": "application/json",
       },
     });
+
     console.log(await response.json());
     return response;
   }
 
+  
   function handleToggleLike() {
     setLike(true);
     setDisLike(false);
-    const favorite = !like ? 1 : 0
+    const favorite = !like ? 1 : 0;
     fetchRequestLikeAndDisliked(favorite);
   }
 
   function handleToggleDisLike() {
     setDisLike(true);
     setLike(false);
-    const favorite = !disLike ? 0 : 1
+    const favorite = !disLike ? 0 : 1;
     fetchRequestLikeAndDisliked(favorite);
   }
 

@@ -32,7 +32,7 @@ const Card = (props) => {
         <Image
           className={styles.cardImg}
           onError={handleError}
-          src={imgSource}
+          src={imgSource ? imgSource : handleError()}
           alt="image"
           layout="fill" // dont need height or width since is getting inherit from the parent div , on line 16 class map css, and we are using layout="fill"
         />

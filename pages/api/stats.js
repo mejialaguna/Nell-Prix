@@ -5,8 +5,9 @@ async function stats(req, res) {
   const token = req.cookies.token;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const userId = decoded.issuer;
-  const { favorite, watched = true, videoId } = req.body;
-  console.log({req: req.query})
+  const inquirer = req.method === "POST" ? req.body : req.query;
+  const { favorite, watched = true, videoId } = inquirer;
+  
 
   try {
     if (token) {
