@@ -4,12 +4,15 @@ import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
 import { getVideos, getMostPopularVideos, watchItAgainVideos } from "../lib/index";
+import decodeTokenFunction from "../lib/utils"
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJkaWQ6ZXRocjoweDdENEQ3RjRGZjcyMjZmOTAwRGUyMDAxRENmNDA3OWFCOGJFOWIwYzgiLCJlbWFpbCI6Im1lamlhbGFndW5hQHlhaG9vLmNvbSIsInB1YmxpY0FkZHJlc3MiOiIweDdENEQ3RjRGZjcyMjZmOTAwRGUyMDAxRENmNDA3OWFCOGJFOWIwYzgiLCJpYXQiOjE2NDc5NjAxOTEsImV4cCI6MTY0ODU2NDk5MSwiaHR0cHM6Ly9oYXN1cmEuaW8vand0L2NsYWltcyI6eyJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ1c2VyIiwieC1oYXN1cmEtdXNlci1pZCI6ImRpZDpldGhyOjB4N0Q0RDdGNEZmNzIyNmY5MDBEZTIwMDFEQ2Y0MDc5YUI4YkU5YjBjOCJ9fQ.DxiatwXB2dCfuCbN9t4PEV7XUbP1gO0Kwb73O_KaLnc";
-  const userId = "did:ethr:0x7D4D7F4Ff7226f900De2001DCf4079aB8bE9b0c8";
+  
+  const token = context.req.cookies.token;
+   const decoded = decodeTokenFunction(token);
+
+  const userId = decoded.issuer;
 
   const watchAgainVideos = await watchItAgainVideos(userId , token)
   const disneyVideos = await getVideos("disneyTrailer");
@@ -17,7 +20,7 @@ export async function getServerSideProps() {
   const marvelMovies = await getVideos("marvelMovies");
   const Popular = await getMostPopularVideos();
 
-  console.log("line 20------------------------",{watchAgainVideos})
+  // console.log("line 20------------------------",{watchAgainVideos})
   // ssr
   return {
     props: {
@@ -37,7 +40,6 @@ export default function Home({
   marvelMovies,
   watchAgainVideos,
 }) {
-  console.log("-----------------line40", {watchAgainVideos})
 
   return (
     <div className={styles.container}>

@@ -1,9 +1,10 @@
-var jwt = require("jsonwebtoken");
-import { findVideoIdByUser, updateStats, insertStats } from "../../lib/db";
 
+import { findVideoIdByUser, updateStats, insertStats } from "../../lib/db";
+import decodeTokenFunction from "../../lib/utils"
 async function stats(req, res) {
   const token = req.cookies.token;
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const decoded = decodeTokenFunction(token)
+  
   const userId = decoded.issuer;
   const inquirer = req.method === "POST" ? req.body : req.query;
   const { favorite, watched = true, videoId } = inquirer;
