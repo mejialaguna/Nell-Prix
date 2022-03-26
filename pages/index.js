@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
   
   
   const token = context.req.cookies.token;
-   const decoded = decodeTokenFunction(token);
+   const decoded = await decodeTokenFunction(token);
 
   const userId = decoded.issuer;
 
@@ -20,7 +20,15 @@ export async function getServerSideProps(context) {
   const marvelMovies = await getVideos("marvelMovies");
   const Popular = await getMostPopularVideos();
 
-  // console.log("line 20------------------------",{watchAgainVideos})
+   if (!userId) {
+     return {
+       props:{},
+       redirect: {
+         destination: "/login",
+         permanent: false,
+       },
+     };
+   }
   // ssr
   return {
     props: {
