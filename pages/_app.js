@@ -2,22 +2,11 @@ import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { isLoggedIn } from "../lib/magic-Link";
-import Loading from "../components/Loading"
+import Loading from "../components/Loading";
 
 function MyApp({ Component, pageProps }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
-  // useEffect(async () => {
-  //   const isLogIn = await isLoggedIn();
-  //   if ( isLogIn) {
-  //     // setIsLoading(false);
-  //     router.push("/");
-  //   } else {
-  //     // setIsLoading(false);
-  //     router.push("/login");
-  //   }
-  // }, []);
 
   useEffect(() => {
     //helps with my flickering
@@ -32,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  return <Component {...pageProps} />; //isLoading ? <Loading /> :
+  return isLoading ? <Loading /> : <Component {...pageProps} />;
 }
 
 export default MyApp;

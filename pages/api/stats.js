@@ -1,11 +1,11 @@
 
 import { findVideoIdByUser, updateStats, insertStats } from "../../lib/db";
-import decodeTokenFunction from "../../lib/utils"
+import decodeTokenFunction from "../../lib/utils/decodeToken"
 async function stats(req, res) {
   const token = req.cookies.token;
-  const decoded = await decodeTokenFunction(token);
+  const userId = await decodeTokenFunction(token);
+
   
-  const userId = decoded.issuer;
   const inquirer = req.method === "POST" ? req.body : req.query;
   const { favorite, watched = true, videoId } = inquirer;  
 

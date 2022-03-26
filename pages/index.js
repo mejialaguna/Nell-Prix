@@ -4,31 +4,30 @@ import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
 import { getVideos, getMostPopularVideos, watchItAgainVideos } from "../lib/index";
-import decodeTokenFunction from "../lib/utils"
+import { verifyUser } from "../lib/utils/verifyUser";
 
 export async function getServerSideProps(context) {
+
+  const { token, userId } = await verifyUser(context) 
+  
+  if (!token) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   
   
-  const token = context.req.cookies.token;
-   const decoded = await decodeTokenFunction(token);
-
-  const userId = decoded.issuer;
-
   const watchAgainVideos = await watchItAgainVideos(userId , token)
   const disneyVideos = await getVideos("disneyTrailer");
   const bestAnime = await getVideos("bestAnime");
   const marvelMovies = await getVideos("marvelMovies");
   const Popular = await getMostPopularVideos();
 
-   if (!userId) {
-     return {
-       props:{},
-       redirect: {
-         destination: "/login",
-         permanent: false,
-       },
-     };
-   }
+   
   // ssr
   return {
     props: {
