@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { magicLink } from "../../lib/magic-Link/index";
 import Loading from "../../components/Loading";
+import Link from "next/link";
 import { isLoggedIn } from "../../lib/magic-Link/index";
 
 const regex =
@@ -67,12 +68,6 @@ const Login = function () {
     }
   }
 
-  // useEffect(() => {
-  //   const loggedIn = isLoggedIn();
-  //   if (loggedIn) {
-  //     router.back();
-  //   }
-  // }, [])
 
   useEffect(() => {
     function handleComplete() {
@@ -94,16 +89,18 @@ const Login = function () {
 
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
-          <a className={styles.logoLink} href="/">
-            <div className={styles.logoWrapper}>
-              <Image
-                src={netflixLogo}
-                width="128px"
-                height="34px"
-                alt="netflix logo"
-              />
-            </div>
-          </a>
+          <Link href="/">
+            <a className={styles.logoLink}>
+              <div className={styles.logoWrapper}>
+                <Image
+                  src={netflixLogo}
+                  width="128px"
+                  height="34px"
+                  alt="netflix logo"
+                />
+              </div>
+            </a>
+          </Link>
         </div>
       </header>
       <main className={styles.main}>

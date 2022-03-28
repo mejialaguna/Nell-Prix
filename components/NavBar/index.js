@@ -1,7 +1,7 @@
 import styles from "./NavBar.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
-// import Link from "next/link";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import netflixLogo from "../../public/static/netflix.svg";
 import DropDownIcon from "../../public/static/dropDown.png";
@@ -15,12 +15,15 @@ const NavBar = () => {
 
   const [navDropDown, setNavDropDown] = useState(false);
 
-  useEffect(async () => {
-    const dIdToken = await magicLinkMetaData();
-    if (dIdToken) {
-      setUsername(dIdToken.email);
-      setDidToken(dIdToken);
+  useEffect(() => {
+    async function getToken() {
+      const dIdToken = await magicLinkMetaData();
+      if (dIdToken) {
+        setUsername(dIdToken.email);
+        setDidToken(dIdToken);
+      }
     }
+    getToken()
   }, []);
 
   const handleOnclickHome = (e) => {
@@ -58,16 +61,18 @@ const NavBar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <a className={styles.logoLink} href="/">
-          <div className={styles.logoWrapper}>
-            <Image
-              src={netflixLogo}
-              width="128px"
-              height="34px"
-              alt="netflix logo"
-            />
-          </div>
-        </a>
+        <Link href="/">
+          <a className={styles.logoLink}>
+            <div className={styles.logoWrapper}>
+              <Image
+                src={netflixLogo}
+                width="128px"
+                height="34px"
+                alt="netflix logo"
+              />
+            </div>
+          </a>
+        </Link>
         <ul className={styles.navItems}>
           <li className={styles.navItem} onClick={handleOnclickHome}>
             Home

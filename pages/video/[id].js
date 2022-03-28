@@ -43,34 +43,38 @@ export async function getStaticPaths() {
 }
 
 function videoId({ video }) {
-  const [like, setLike] = useState(false);
-  const [disLike, setDisLike] = useState(false);
+  const [like, setLike] = useState(false); //eslint-disable-line
+  const [disLike, setDisLike] = useState(false); //eslint-disable-line
 
   const { title, publishTime, description, channelTitle, viewCount } = video;
-  const router = useRouter();
+  const router = useRouter(); //eslint-disable-line
 
   const vId = router.query.id;
 
-  useEffect(async () => {
-    const response = await fetch(`/api/stats?videoId=${vId} `, {
-      method: "GET", // GET method cant have body , to request info have to come from the query line 56
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
+  useEffect(() => { //eslint-disable-line
+    async function fetchData() {
+      const response = await fetch(`/api/stats?videoId=${vId} `, {
+        method: "GET", // GET method cant have body , to request info have to come from the query line 56
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
 
-    if (data.length > 0) {
-      const favorite = data[0].favorite;
-      if (favorite >= 1) {
-        setLike(true);
-      } else {
-        setDisLike(true);
+      if (data.length > 0) {
+        const favorite = data[0].favorite;
+        if (favorite >= 1) {
+          setLike(true);
+        } else {
+          setDisLike(true);
+        }
       }
+
+      return data;
     }
 
-    return data;
-  }, []);
+    fetchData();
+  }, [vId]); 
 
   async function fetchRequestLikeAndDisliked(favorite) {
     const response = await fetch("/api/stats", {
