@@ -9,15 +9,15 @@ export async function getServerSideProps(context) {
   const { token, userId } = await verifyUser(context);
   const myListVideos = await myFavoriteVideos(userId, token);
 
-  if (!token) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+  // if (!token) {
+  //   return {
+  //     props: {},
+  //     redirect: {
+  //       destination: "/login", // using next.js middleware instead of this
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   return {
     props: { myListVideos },
