@@ -9,16 +9,17 @@ import { magicLinkMetaData, signOut } from "../../lib/magic-Link/index";
 
 const NavBar = () => {
   const [username, setUsername] = useState("");
+  const [didToken, setDidToken] = useState("");
 
   const router = useRouter();
 
   const [navDropDown, setNavDropDown] = useState(false);
 
   useEffect(async () => {
-    const data = await magicLinkMetaData();
-    console.log({data})
-    if (data) {
-      setUsername(data.email);
+    const dIdToken = await magicLinkMetaData();
+    if (dIdToken) {
+      setUsername(dIdToken.email);
+      setDidToken(dIdToken);
     }
   }, []);
 
@@ -35,11 +36,24 @@ const NavBar = () => {
     setNavDropDown(!navDropDown);
   };
 
-  async function handleSignOut(e) {
+  const handleSignOut = async (e) => {
     e.preventDefault();
-    signOut();
-    router.push("/login");
-  }
+
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const res = await response.json();
+    } catch (error) {
+      console.error("Error logging out", error);
+      router.push("/login");
+    }
+  };
 
   return (
     <div className={styles.container}>

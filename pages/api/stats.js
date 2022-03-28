@@ -51,7 +51,7 @@ async function stats(req, res) {
   } catch (error) {
     console.error({ message: "error has ocurred /stats", error });
     res.status(500).send({ done: false, error: error.message });
-    console.log({ error });
+    
   }
 }
 

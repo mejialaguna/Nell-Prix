@@ -42,7 +42,6 @@ const Login = function () {
       // log in a user by their email
       setLoading(true);
       const dIdToken = await magicLink(email);
-      console.log({dIdToken})
         if (dIdToken) {
           const response = await fetch("/api/login", {
             method: "POST",
@@ -55,7 +54,6 @@ const Login = function () {
           const loggedInResponse = await response.json();
           if (loggedInResponse.done) {
             router.push("/");
-            console.log({ loggedInResponse });
           } else {
             setUserMsg("invalid Email address");
             setEmail("");

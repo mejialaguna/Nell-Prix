@@ -3,13 +3,16 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import NavBar from "../components/NavBar";
 import SectionCard from "../components/Card/SectionCard";
-import { getVideos, getMostPopularVideos, watchItAgainVideos } from "../lib/index";
+import {
+  getVideos,
+  getMostPopularVideos,
+  watchItAgainVideos,
+} from "../lib/index";
 import { verifyUser } from "../lib/utils/verifyUser";
 
 export async function getServerSideProps(context) {
+  const { token, userId } = await verifyUser(context);
 
-  const { token, userId } = await verifyUser(context) 
-  
   if (!token) {
     return {
       props: {},
@@ -19,15 +22,13 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  
-  
-  const watchAgainVideos = await watchItAgainVideos(userId , token)
+
+  const watchAgainVideos = await watchItAgainVideos(userId, token);
   const disneyVideos = await getVideos("disneyTrailer");
   const bestAnime = await getVideos("bestAnime");
   const marvelMovies = await getVideos("marvelMovies");
   const Popular = await getMostPopularVideos();
 
-   
   // ssr
   return {
     props: {
@@ -47,7 +48,6 @@ export default function Home({
   marvelMovies,
   watchAgainVideos,
 }) {
-
   return (
     <div className={styles.container}>
       <Head>

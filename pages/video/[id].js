@@ -50,7 +50,6 @@ function videoId({ video }) {
   const router = useRouter();
 
   const vId = router.query.id;
-  console.log({ vId });
 
   useEffect(async () => {
     const response = await fetch(`/api/stats?videoId=${vId} `, {
@@ -64,16 +63,14 @@ function videoId({ video }) {
     if (data.length > 0) {
       const favorite = data[0].favorite;
       if (favorite >= 1) {
-        setLike(true)
+        setLike(true);
       } else {
-        setDisLike(true)
+        setDisLike(true);
       }
-    }    
+    }
 
-    console.log({ data });
     return data;
   }, []);
-
 
   async function fetchRequestLikeAndDisliked(favorite) {
     const response = await fetch("/api/stats", {
@@ -88,11 +85,9 @@ function videoId({ video }) {
       },
     });
 
-    console.log(await response.json());
     return response;
   }
 
-  
   function handleToggleLike() {
     setLike(true);
     setDisLike(false);
