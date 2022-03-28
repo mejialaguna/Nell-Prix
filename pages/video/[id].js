@@ -42,16 +42,16 @@ export async function getStaticPaths() {
   return { paths, fallback: "blocking" };
 }
 
-function videoId({ video }) {
-  const [like, setLike] = useState(false); 
-  const [disLike, setDisLike] = useState(false); 
+function videoId({ video }) {  /* eslint-disable */
+  const [like, setLike] = useState(false); /* eslint-disable */
+  const [disLike, setDisLike] = useState(false); /* eslint-disable */
 
   const { title, publishTime, description, channelTitle, viewCount } = video;
-  const router = useRouter(); 
+  const router = useRouter(); /* eslint-disable */
 
   const vId = router.query.id;
 
-  useEffect(() => { 
+  useEffect(() => { /* eslint-disable */
     async function fetchData() {
       const response = await fetch(`/api/stats?videoId=${vId} `, {
         method: "GET", // GET method cant have body , to request info have to come from the query line 56
@@ -74,7 +74,7 @@ function videoId({ video }) {
     }
 
     fetchData();
-  }, [vId]); 
+  }, [vId]);
 
   async function fetchRequestLikeAndDisliked(favorite) {
     const response = await fetch("/api/stats", {
