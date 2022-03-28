@@ -43,15 +43,15 @@ export async function getStaticPaths() {
 }
 
 function videoId({ video }) {
-  const [like, setLike] = useState(false); //eslint-disable-line
-  const [disLike, setDisLike] = useState(false); //eslint-disable-line
+  const [like, setLike] = useState(false); 
+  const [disLike, setDisLike] = useState(false); 
 
   const { title, publishTime, description, channelTitle, viewCount } = video;
-  const router = useRouter(); //eslint-disable-line
+  const router = useRouter(); 
 
   const vId = router.query.id;
 
-  useEffect(() => { //eslint-disable-line
+  useEffect(() => { 
     async function fetchData() {
       const response = await fetch(`/api/stats?videoId=${vId} `, {
         method: "GET", // GET method cant have body , to request info have to come from the query line 56
