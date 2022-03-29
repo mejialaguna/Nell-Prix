@@ -1,6 +1,4 @@
-import Document, { Head, Html, Main, NextScript } from "next/document"; 
-
-//this is trying to preload the font to give us a performance advantage since the font are loaded in advance.
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
   render() {
@@ -14,7 +12,7 @@ class MyDocument extends Document {
             href="https://fonts.gstatic.com"
             crossOrigin="anonymous"
           />
-          <link 
+          <link
             href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap"
             rel="stylesheet"
           />
