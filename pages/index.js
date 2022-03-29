@@ -13,15 +13,15 @@ import { verifyUser } from "../lib/utils/verifyUser";
 export async function getServerSideProps(context) {
   const { token, userId } = await verifyUser(context);
 
-  // if (!token) {
-  //   return {
-  //     props: {},
-  //     redirect: {
-  //       destination: "/login", // using next.js middleware instead of this
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!token) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login", // using next.js middleware instead of this
+        permanent: false,
+      },
+    };
+  }
 
   const watchAgainVideos = await watchItAgainVideos(userId, token);
   const disneyVideos = await getVideos("disneyTrailer");
