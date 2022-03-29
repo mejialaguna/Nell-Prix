@@ -1,4 +1,6 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+
+//this is trying to preload the font to give us a performance advantage since the font are loaded in advance.
 
 class MyDocument extends Document {
   render() {
