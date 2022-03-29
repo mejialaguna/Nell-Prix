@@ -42,7 +42,7 @@ export async function getStaticPaths() {
   return { paths, fallback: "blocking" };
 }
 
-function videoId({ video }) { 
+function videoId({ video }){ 
   const [like, setLike] = useState(false);
   const [disLike, setDisLike] = useState(false);
 
