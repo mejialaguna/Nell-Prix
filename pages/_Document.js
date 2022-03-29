@@ -7,7 +7,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {/* we also need to add the css rules to the font family inside styles - global.css file */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
