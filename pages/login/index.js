@@ -6,10 +6,9 @@ import { useState } from "react";
 import cls from "classnames";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { magicLink } from "../../lib/magic-Link/index";
+import { magicLink } from "../../lib/magic-client/index";
 import Loading from "../../components/Loading";
 import Link from "next/link";
-import { isLoggedIn } from "../../lib/magic-Link/index";
 
 const regex =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;

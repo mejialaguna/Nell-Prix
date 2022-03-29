@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import netflixLogo from "../../public/static/netflix.svg";
 import DropDownIcon from "../../public/static/dropDown.png";
-import { magicLinkMetaData, signOut } from "../../lib/magic-Link/index";
+import { magicLinkMetaData, signOut } from "../../lib/magic-client/index";
 
 const NavBar = () => {
   const [username, setUsername] = useState("");

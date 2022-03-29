@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { isLoggedIn } from "../lib/magic-Link";
 import Loading from "../components/Loading";
 
 function MyApp({ Component, pageProps }) {
