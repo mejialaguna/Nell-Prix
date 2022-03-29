@@ -8,8 +8,10 @@ import { verifyUser } from "../../lib/utils/verifyUser";
 export async function getServerSideProps(context) {
   const { token, userId } = await verifyUser(context);
   const myListVideos = await myFavoriteVideos(userId, token);
+  const url = context.resolvedUrl;
+  console.log(context.resolvedUrl);
 
-  if (!token) {
+  if (!token && !userId) {
     return {
       props: {},
       redirect: {
