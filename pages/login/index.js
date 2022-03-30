@@ -38,10 +38,12 @@ const Login = function () {
   async function handleLogin(e) {
     e.preventDefault();
 
-    if ( email) {
-      // log in a user by their email
+    if (isValid && email) {
+      try {
+        // log in a user by their email
       setLoading(true);
       const DIDToken = await magicLink(email);
+      console.log({DIDToken})
         if (DIDToken) {
           const response = await fetch("/api/login", {
             method: "POST",
@@ -59,7 +61,12 @@ const Login = function () {
             setEmail("");
             setLoading(false);
           }
-        }
+        } 
+      } catch (error) {
+         console.error("Something went wrong logging in", error);
+        setLoading(false);
+      }
+      
     } else if (!isValid) {
       setUserMsg("invalid Email address");
       setEmail("");
