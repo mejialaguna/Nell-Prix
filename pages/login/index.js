@@ -6,7 +6,7 @@ import { useState } from "react";
 import cls from "classnames";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { magicLink } from "../../lib/magic-client/index";
+import { magicLink } from "../../lib/magic-client";
 import Loading from "../../components/Loading";
 import Link from "next/link";
 

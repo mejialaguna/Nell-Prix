@@ -1,4 +1,4 @@
-import magicAd
+import { magicAdmin } from "../../lib/magic-Server";
 import jwt from "jsonwebtoken";
 import { isNewUser, createNewUser } from "../../lib/db";
 import { setTokenCookie } from "../../lib/cookie";
@@ -9,9 +9,9 @@ export default async function login(req, res) {
   if (req.method === "POST") {
     try {
       const auth = req.headers.authorization;
-      const DIDToken = auth ? auth.substr(7) : "";
-      
-      const metadata = await magicAdmin.users.getMetadataByToken(DIDToken);
+      const didToken = auth ? auth.substr(7) : "";
+
+      const metadata = await magicAdmin.users.getMetadataByToken(didToken);
       const { issuer, email, publicAddress } = metadata;
 
       const token = jwt.sign(
