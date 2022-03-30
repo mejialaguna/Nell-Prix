@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import netflixLogo from "../../public/static/netflix.svg";
 import DropDownIcon from "../../public/static/dropDown.png";
-import { magic } from "../../lib/magic-client";
+import { magicLinkMetaData, signOut } from "../../lib/magic-client/index";
 
 const NavBar = () => {
   const [username, setUsername] = useState("");
-  const [dIdToken, setDidToken] = useState("");
+  const [didToken, setDidToken] = useState("");
 
   const router = useRouter();
 
@@ -17,18 +17,13 @@ const NavBar = () => {
 
   useEffect(() => {
     async function getToken() {
-      try {
-        const { email } = await magic.user.getMetadata();
-        const didToken = await magic.user.getIdToken();
-        if (email) {
-          setUsername(email);
-          setDidToken(didToken);
-        }
-      } catch (error) {
-        console.error("Error retrieving email", error);
+      const dIdToken = await magicLinkMetaData();
+      if (dIdToken) {
+        setUsername(dIdToken.email);
+        setDidToken(dIdToken);
       }
     }
-    getToken();
+    getToken()
   }, []);
 
   const handleOnclickHome = (e) => {
@@ -51,7 +46,7 @@ const NavBar = () => {
       const response = await fetch("/api/logout", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${dIdToken}`,
+          Authorization: `Bearer ${didToken}`,
           "Content-Type": "application/json",
         },
       });

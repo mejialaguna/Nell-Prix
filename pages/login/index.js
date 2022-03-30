@@ -6,7 +6,7 @@ import { useState } from "react";
 import cls from "classnames";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { magic } from "../../lib/magic-client/index";
+import { magicLink } from "../../lib/magic-client/index";
 import Loading from "../../components/Loading";
 import Link from "next/link";
 
@@ -39,18 +39,14 @@ const Login = function () {
     e.preventDefault();
 
     if (isValid && email) {
-      try {
-        // log in a user by their email
+      // log in a user by their email
       setLoading(true);
-        const DIDToken = await magic.auth.loginWithMagicLink({
-          email,
-        });
-        
-        if (DIDToken) {
+      const dIdToken = await magicLink(email);
+        if (dIdToken) {
           const response = await fetch("/api/login", {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${DIDToken}`,
+              Authorization: `Bearer ${dIdToken}`,
               "Content-Type": "application/json",
             },
           });
@@ -63,12 +59,7 @@ const Login = function () {
             setEmail("");
             setLoading(false);
           }
-        } 
-      } catch (error) {
-         console.error("Something went wrong logging in", error);
-        setLoading(false);
-      }
-      
+        }
     } else if (!isValid) {
       setUserMsg("invalid Email address");
       setEmail("");
