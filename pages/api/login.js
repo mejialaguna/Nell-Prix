@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import { isNewUser, createNewUser } from "../../lib/db";
 import { setTokenCookie } from "../../lib/cookie";
 
-
-
 export default async function login(req, res) {
   if (req.method === "POST") {
     try {
@@ -29,14 +27,12 @@ export default async function login(req, res) {
         },
         process.env.JWT_SECRET
       );
-     
 
       const isNewUserQuery = await isNewUser(token, issuer);
       isNewUserQuery && (await createNewUser(token, metadata));
-      setTokenCookie(token, res)   
-      
+      setTokenCookie(token, res);
+
       res.send({ done: true });
-      
     } catch (error) {
       console.error("Something went wrong logging in", error);
       res.status(500).send({ done: false });
