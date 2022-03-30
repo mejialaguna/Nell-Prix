@@ -6,7 +6,7 @@ import { useState } from "react";
 import cls from "classnames";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { magicLink } from "../../lib/magic-client/index";
+import { magic } from "../../lib/magic-client/index";
 import Loading from "../../components/Loading";
 import Link from "next/link";
 
@@ -42,8 +42,10 @@ const Login = function () {
       try {
         // log in a user by their email
       setLoading(true);
-      const DIDToken = await magicLink(email);
-      console.log({DIDToken})
+        const DIDToken = await magic.auth.loginWithMagicLink({
+          email,
+        });
+        
         if (DIDToken) {
           const response = await fetch("/api/login", {
             method: "POST",

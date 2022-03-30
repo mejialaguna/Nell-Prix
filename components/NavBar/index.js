@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import netflixLogo from "../../public/static/netflix.svg";
 import DropDownIcon from "../../public/static/dropDown.png";
-import { magicLinkMetaData, signOut } from "../../lib/magic-client/index";
+import { magic } from "../../lib/magic-client";
 
 const NavBar = () => {
   const [username, setUsername] = useState("");
@@ -17,13 +17,18 @@ const NavBar = () => {
 
   useEffect(() => {
     async function getToken() {
-      const dIdToken = await magicLinkMetaData();
-      if (dIdToken) {
-        setUsername(dIdToken.email);
-        setDidToken(dIdToken);
+      try {
+        const { email } = await magic.user.getMetadata();
+        const didToken = await magic.user.getIdToken();
+        if (email) {
+          setUsername(email);
+          setDidToken(didToken);
+        }
+      } catch (error) {
+        console.error("Error retrieving email", error);
       }
     }
-    getToken()
+    getToken();
   }, []);
 
   const handleOnclickHome = (e) => {
