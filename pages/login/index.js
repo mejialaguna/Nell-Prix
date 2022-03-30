@@ -41,12 +41,12 @@ const Login = function () {
     if (isValid && email) {
       // log in a user by their email
       setLoading(true);
-      const dIdToken = await magicLink(email);
-        if (dIdToken) {
+      const DIDToken = await magicLink(email);
+        if (DIDToken) {
           const response = await fetch("/api/login", {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${dIdToken}`,
+              Authorization: `Bearer ${DIDToken}`,
               "Content-Type": "application/json",
             },
           });

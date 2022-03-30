@@ -9,7 +9,7 @@ import { magicLinkMetaData, signOut } from "../../lib/magic-client/index";
 
 const NavBar = () => {
   const [username, setUsername] = useState("");
-  const [didToken, setDidToken] = useState("");
+  const [dIdToken, setDidToken] = useState("");
 
   const router = useRouter();
 
@@ -46,7 +46,7 @@ const NavBar = () => {
       const response = await fetch("/api/logout", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${didToken}`,
+          Authorization: `Bearer ${dIdToken}`,
           "Content-Type": "application/json",
         },
       });
