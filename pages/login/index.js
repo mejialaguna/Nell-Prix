@@ -38,7 +38,7 @@ const Login = function () {
   async function handleLogin(e) {
     e.preventDefault();
 
-    if (isValid && email) {
+    if ( email) {
       // log in a user by their email
       setLoading(true);
       const DIDToken = await magicLink(email);
