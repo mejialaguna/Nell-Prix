@@ -6,12 +6,17 @@ import { setTokenCookie } from "../../lib/cookie";
 export default async function login(req, res) {
   if (req.method === "POST") {
     try {
-      const auth = req.headers.authorization;
-      const DIDToken = auth ? auth.substr(7) : "";
+      
+      // const auth = req.headers.authorization;
+      // const DIDToken = auth ? auth.substr(7) : "";
+      const DIDToken = mAdmin.utils.parseAuthorizationHeader(
+        req.headers.authorization
+      );
       console.log({DIDToken})
       const metadata = await mAdmin.users.getMetadataByToken(DIDToken);
       console.log({metadata})
       const { issuer, email, publicAddress } = metadata;
+      console.log({issuer})
 
       const token = jwt.sign(
         {

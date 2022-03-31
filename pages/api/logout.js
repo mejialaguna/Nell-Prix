@@ -12,7 +12,7 @@ export default async function logout(req, res) {
     console.log(userId)
     removeTokenCookie(res);
     try {
-     await mAdmin.users.getMetadataByIssuer(issuer);
+     await mAdmin.users.getMetadataByIssuer(userId);
     } catch (error) {
       console.error("Error occurred while logging out magic user", error);
     }
