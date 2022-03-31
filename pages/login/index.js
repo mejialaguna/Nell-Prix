@@ -41,7 +41,7 @@ const Login = function () {
     if (isValid && email) {
       // log in a user by their email
       setLoading(true);
-      const dIdToken = await magicLink(email);
+      const dIdToken = await magicLink.user.getIdToken();
       console.log({dIdToken})
         if (dIdToken) {
           const response = await fetch("/api/login", {
