@@ -8,36 +8,36 @@ import DropDownIcon from "../../public/static/dropDown.png";
 import { magicLink } from "../../lib/magic-client/index";
 
 const NavBar = () => {
+  const [navDropDown, setNavDropDown] = useState(false);
   const [username, setUsername] = useState("");
   const [didToken, setDidToken] = useState("");
-
   const router = useRouter();
 
-  const [navDropDown, setNavDropDown] = useState(false);
-
-  useEffect(() => {
-    async function getToken() {
-      const dIdToken = await magicLink.user.getIdToken();
-      const { email, publicAddress } = await magicLink.user.getMetadata();
-      console.log("line-------------21", { didToken });
-      if (dIdToken) {
+  useEffect(async () => {
+    try {
+      const { email, issuer } = await magicLink.user.getMetadata();
+      const didToken = await magicLink.user.getIdToken();
+      if (email) {
         setUsername(email);
-        setDidToken(dIdToken);
+        setDidToken(didToken);
       }
+    } catch (error) {
+      console.error("Error retrieving email", error);
     }
-    getToken();
   }, []);
 
-  const handleOnclickHome = (e) => {
+  const handleOnClickHome = (e) => {
     e.preventDefault();
     router.push("/");
   };
-  const handleOnclickMyList = (e) => {
+
+  const handleOnClickMyList = (e) => {
     e.preventDefault();
     router.push("/browse/my-list");
   };
 
-  const handleDropDown = () => {
+  const handleShowDropdown = (e) => {
+    e.preventDefault();
     setNavDropDown(!navDropDown);
   };
 
@@ -76,16 +76,16 @@ const NavBar = () => {
           </a>
         </Link>
         <ul className={styles.navItems}>
-          <li className={styles.navItem} onClick={handleOnclickHome}>
+          <li className={styles.navItem} onClick={handleOnClickHome}>
             Home
           </li>
-          <li className={styles.navItem2} onClick={handleOnclickMyList}>
+          <li className={styles.navItem2} onClick={handleOnClickMyList}>
             List
           </li>
         </ul>
         <nav className={styles.navContainer}>
           <div>
-            <button onClick={handleDropDown} className={styles.usernameBtn}>
+            <button onClick={handleShowDropdown} className={styles.usernameBtn}>
               <p className={styles.username}>{username}</p>
               <Image
                 src={DropDownIcon}

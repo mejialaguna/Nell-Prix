@@ -10,44 +10,48 @@ import { magicLink } from "../../lib/magic-client";
 import Loading from "../../components/Loading";
 import Link from "next/link";
 
-const regex =
-  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-const Login = function () {
-  const [loading, setLoading] = useState(false);
-  const [isValid, SetIsValid] = useState(false);
-  const [userMsg, setUserMsg] = useState("");
+const Login = () => {
   const [email, setEmail] = useState("");
+  const [userMsg, setUserMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
-  function handleOnChange(e) {
-    const email = e.target.value;
-    validateEmail(email);
-    setEmail(email);
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    };
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
+
+  const handleOnChangeEmail = (e) => {
     setUserMsg("");
-  }
+    const email = e.target.value;
+    setEmail(email);
+  };
 
-  function validateEmail(email) {
-    if (regex.test(email)) {
-      SetIsValid(true);
-    } else {
-      SetIsValid(false);
-    }
-  }
-
-  async function handleLogin(e) {
+  const handleLoginWithEmail = async (e) => {
     e.preventDefault();
 
-    if (isValid && email) {
+    if (email) {
       // log in a user by their email
-      setLoading(true);
-      const dIdToken = await magicLink.user.getIdToken();
-      console.log({dIdToken})
-        if (dIdToken) {
+      try {
+        setIsLoading(true);
+
+        const didToken = await magicLink.auth.loginWithMagicLink({
+          email,
+        });
+        if (didToken) {
           const response = await fetch("/api/login", {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${dIdToken}`,
+              Authorization: `Bearer ${didToken}`,
               "Content-Type": "application/json",
             },
           });
@@ -56,77 +60,57 @@ const Login = function () {
           if (loggedInResponse.done) {
             router.push("/");
           } else {
-            setUserMsg("invalid Email address");
-            setEmail("");
-            setLoading(false);
+            setIsLoading(false);
+            setUserMsg("Something went wrong logging in");
           }
         }
-    } else if (!isValid) {
-      setUserMsg("invalid Email address");
-      setEmail("");
-      setLoading(false);
+      } catch (error) {
+        // Handle errors if required!
+        console.error("Something went wrong logging in", error);
+        setIsLoading(false);
+      }
+    } else {
+      // show user message
+      setIsLoading(false);
+      setUserMsg("Enter a valid email address");
     }
-  }
-
-
-  useEffect(() => {
-    function handleComplete() {
-      setLoading(false);
-    }
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-    return () => {
-      router.events.off("routeChangeComplete", handleComplete);
-      router.events.off("routeChangeError", handleComplete);
-    };
-  }, [router]);
-
+  };
   return (
     <div className={styles.container}>
       <Head>
-        <title> Netflix SignIn</title>
+        <title>Netflix SignIn</title>
       </Head>
 
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
-          <Link href="/">
-            <a className={styles.logoLink}>
-              <div className={styles.logoWrapper}>
-                <Image
-                  src={netflixLogo}
-                  width="128px"
-                  height="34px"
-                  alt="netflix logo"
-                />
-              </div>
-            </a>
-          </Link>
+          <a className={styles.logoLink} href="/">
+            <div className={styles.logoWrapper}>
+              <Image
+                src={netflixLogo}
+                alt="Netflix logo"
+                width="128px"
+                height="34px"
+              />
+            </div>
+          </a>
         </div>
       </header>
+
       <main className={styles.main}>
         <div className={styles.mainWrapper}>
-          <h1 className={styles.signInHeader}> Sign In</h1>
+          <h1 className={styles.signinHeader}>Sign In</h1>
+
           <input
-            onChange={handleOnChange}
-            label="Email Address"
-            name="Email Address"
-            value={email}
-            className={styles.emailInput}
             type="text"
             placeholder="Email address"
+            className={styles.emailInput}
+            onChange={handleOnChangeEmail}
           />
-          <p className={styles.userMsg}> {userMsg}</p>
-          {loading ? (
-            <Loading />
-          ) : (
-            <button
-              onClick={handleLogin}
-              className={cls(styles.loginBtn, !email && styles.disabled)}
-              disabled={!email}
-            >
-              Sign In
-            </button>
-          )}
+
+          <p className={styles.userMsg}>{userMsg}</p>
+          <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
+            {isLoading ? "Loading..." : "Sign In"}
+          </button>
         </div>
       </main>
     </div>
