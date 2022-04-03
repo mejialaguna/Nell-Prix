@@ -22,17 +22,16 @@ export default async function login(req, res) {
           "https://hasura.io/jwt/claims": {
             "x-hasura-allowed-roles": ["user", "admin"],
             "x-hasura-default-role": "user",
-            "x-hasura-user-id": `${issuer}`,
+            "x-hasura-user-id": `${metadata.issuer}`,
           },
         },
         process.env.JWT_SECRET
       );
 
-      const isNewUserQuery = await isNewUser(token, issuer);
+      const isNewUserQuery = await isNewUser(token, metadata.issuer);
       isNewUserQuery && (await createNewUser(token, metadata));
       setTokenCookie(token, res);
       res.send({ done: true });
-      
     } catch (error) {
       console.error("Something went wrong logging in", error);
       res.status(500).send({ done: false });

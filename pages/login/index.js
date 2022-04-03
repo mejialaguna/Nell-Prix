@@ -35,40 +35,45 @@ const Login = function () {
     }
   }
 
-  async function handleLogin(e) {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (isValid && email) {
+    if (email && isValid) {
       // log in a user by their email
-      setLoading(true);
-      const didToken = await magicLink.auth.loginWithMagicLink({
-        email,
-      });
+      try {
+        setLoading(true);
 
-      if (didToken) {
-        const response = await fetch("/api/login", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${didToken}`,
-            "Content-Type": "application/json",
-          },
+        const didToken = await magicLink.auth.loginWithMagicLink({
+          email,
         });
+        if (didToken) {
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              "Content-Type": "application/json",
+            },
+          });
 
-        const loggedInResponse = await response.json();
-        if (loggedInResponse.done) {
-          router.push("/");
-        } else {
-          setUserMsg("invalid Email address");
-          setEmail("");
-          setLoading(false);
+          const loggedInResponse = await response.json();
+          if (loggedInResponse.done) {
+            router.push("/");
+          } else {
+            setLoading(false);
+            setUserMsg("Something went wrong logging in");
+          }
         }
+      } catch (error) {
+        // Handle errors if required!
+        console.error("Something went wrong logging in", error);
+        setLoading(false);
       }
-    } else if (!isValid) {
-      setUserMsg("invalid Email address");
-      setEmail("");
+    } else {
+      // show user message
       setLoading(false);
+      setUserMsg("Enter a valid email address");
     }
-  }
+  };
 
   useEffect(() => {
     function handleComplete() {
